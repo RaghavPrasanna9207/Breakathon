@@ -1,133 +1,120 @@
-print("Aarambikkalaangala")
-#https://github.com/builders-hut/dead-ideas
+import os
+import time
 
-import sqlite3
-import bcrypt
+def clear_screen():
+    """Clears the console screen for better readability."""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-# Database Setup
-def setup_database():
-    """Sets up the SQLite database for user management."""
-    conn = sqlite3.connect("medibolt_system.db")
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            role TEXT CHECK(role IN ('Patient', 'Doctor', 'Staff')) NOT NULL
-        )
-    """)
-    conn.commit()
-    conn.close()
+def main_menu():
+    """Displays the main menu options."""
+    print("================= Medibolt =================")
+    print("1. Manage Medical Records")
+    print("2. Schedule Appointments")
+    print("3. Doctor Dashboard")
+    print("4. Exit")
+    print("===========================================")
+    choice = input("Select an option (1-4): ")
+    return choice
 
-# User Registration
-def register_user(username, password, role):
-    """Registers a new user in the database."""
-    conn = sqlite3.connect("medibolt_system.db")
-    cursor = conn.cursor()
+def manage_medical_records():
+    """Simulates managing medical records."""
+    clear_screen()
+    print("==== Manage Medical Records ====")
+    print("1. Upload Medical Record")
+    print("2. View Medical Records")
+    print("3. Delete a Medical Record")
+    print("4. Back to Main Menu")
+    print("================================")
+    choice = input("Select an option (1-4): ")
 
-    # Hash the password
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-    try:
-        cursor.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
-                       (username, hashed_password, role))
-        conn.commit()
-        print(f"User '{username}' registered successfully as {role}!")
-    except sqlite3.IntegrityError:
-        print(f"Error: Username '{username}' is already taken.")
-    finally:
-        conn.close()
-
-# User Login
-def login_user(username, password):
-    """Validates user credentials and logs them in."""
-    conn = sqlite3.connect("medibolt_system.db")
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT password, role FROM users WHERE username = ?", (username,))
-    result = cursor.fetchone()
-    conn.close()
-
-    if result:
-        stored_password, role = result
-        if bcrypt.checkpw(password.encode('utf-8'), stored_password):
-            print(f"Login successful! Welcome, {username} ({role}).")
-            return role
-        else:
-            print("Incorrect password. Please try again.")
+    if choice == "1":
+        print("Uploading a medical record...")
+        time.sleep(1)
+        print("Record uploaded successfully.")
+    elif choice == "2":
+        print("Fetching medical records...")
+        time.sleep(1)
+        print("No records found. [Sample Message]")
+    elif choice == "3":
+        print("Deleting a medical record...")
+        time.sleep(1)
+        print("Record deleted successfully.")
+    elif choice == "4":
+        return
     else:
-        print(f"Username '{username}' not found.")
+        print("Invalid choice. Try again.")
+    time.sleep(2)
 
-    return None
+def schedule_appointments():
+    """Simulates scheduling appointments."""
+    clear_screen()
+    print("==== Schedule Appointments ====")
+    print("1. Book an Appointment")
+    print("2. View Upcoming Appointments")
+    print("3. Cancel an Appointment")
+    print("4. Back to Main Menu")
+    print("================================")
+    choice = input("Select an option (1-4): ")
 
-# Main Application Loop
+    if choice == "1":
+        print("Booking an appointment...")
+        time.sleep(1)
+        print("Appointment booked successfully.")
+    elif choice == "2":
+        print("Fetching upcoming appointments...")
+        time.sleep(1)
+        print("No upcoming appointments. [Sample Message]")
+    elif choice == "3":
+        print("Cancelling an appointment...")
+        time.sleep(1)
+        print("Appointment cancelled successfully.")
+    elif choice == "4":
+        return
+    else:
+        print("Invalid choice. Try again.")
+    time.sleep(2)
+
+def doctor_dashboard():
+    """Simulates the doctor dashboard."""
+    clear_screen()
+    print("======= Doctor Dashboard =======")
+    print("1. View Daily Appointments")
+    print("2. Access Patient Records")
+    print("3. Back to Main Menu")
+    print("================================")
+    choice = input("Select an option (1-3): ")
+
+    if choice == "1":
+        print("Fetching daily appointments...")
+        time.sleep(1)
+        print("No appointments for today. [Sample Message]")
+    elif choice == "2":
+        print("Accessing patient records...")
+        time.sleep(1)
+        print("No records available. [Sample Message]")
+    elif choice == "3":
+        return
+    else:
+        print("Invalid choice. Try again.")
+    time.sleep(2)
+
 def main():
-    setup_database()  # Ensure the database is set up
-
-    logged_in_user = None
-    logged_in_role = None
-
     while True:
-        if not logged_in_user:
-            print("\nMedibolt User Management System")
-            print("1. Register a new user")
-            print("2. Login")
-            print("3. Exit")
-            choice = input("Choose an option: ")
+        clear_screen()
+        choice = main_menu()
 
-            if choice == "1":
-                # Register a new user
-                username = input("Enter a new username: ")
-                password = input("Enter a new password: ")
-                print("Select role:")
-                print("1. Patient")
-                print("2. Doctor")
-                print("3. Staff")
-                role_choice = input("Choose a role (1/2/3): ")
-                role_map = {"1": "Patient", "2": "Doctor", "3": "Staff"}
-                role = role_map.get(role_choice)
-
-                if role:
-                    register_user(username, password, role)
-                else:
-                    print("Invalid role selection. Please try again.")
-
-            elif choice == "2":
-                # Login
-                username = input("Enter your username: ")
-                password = input("Enter your password: ")
-                role = login_user(username, password)
-
-                if role:
-                    logged_in_user = username
-                    logged_in_role = role
-
-            elif choice == "3":
-                # Exit
-                print("Exiting the system. Goodbye!")
-                break
-
-            else:
-                print("Invalid option. Please try again.")
-
+        if choice == "1":
+            manage_medical_records()
+        elif choice == "2":
+            schedule_appointments()
+        elif choice == "3":
+            doctor_dashboard()
+        elif choice == "4":
+            print("Exiting Medibolt. Goodbye!")
+            break
         else:
-            print(f"\nWelcome, {logged_in_user} ({logged_in_role})")
-            print("1. Sign out")
-            print("2. Exit")
-            action_choice = input("Choose an option: ")
-
-            if action_choice == "1":
-                print(f"Signing out {logged_in_user}...")
-                logged_in_user = None
-                logged_in_role = None
-
-            elif action_choice == "2":
-                print("Exiting the system. Goodbye!")
-                break
-
-            else:
-                print("Invalid option. Please try again.")
+            print("Invalid choice. Please select a valid option.")
+            time.sleep(2)
 
 if __name__ == "__main__":
     main()
