@@ -1,2 +1,2 @@
 print("Aarambikkalaangala")
-print ("typeshit")
+#https://github.com/builders-hut/dead-ideas
