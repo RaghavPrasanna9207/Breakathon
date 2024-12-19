@@ -67,3 +67,37 @@ def login_user(username, password):
         print(f"Username '{username}' not found.")
 
     return False
+
+if __name__ == "__main__":
+    setup_database()  # Set up the database
+
+    while True:
+        print("\nUser Management System")
+        print("1. Register a new user")
+        print("2. Login")
+        print("3. Exit")
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            # Register a new user
+            username = input("Enter a new username: ")
+            password = input("Enter a new password: ")
+            register_user(username, password)
+
+        elif choice == "2":
+            # Login
+            username = input("Enter your username: ")
+            password = input("Enter your password: ")
+            login_success = login_user(username, password)
+            if login_success:
+                print("You are now logged in.")
+            else:
+                print("Login failed.")
+
+        elif choice == "3":
+            # Exit
+            print("Exiting the system. Goodbye!")
+            break
+
+        else:
+            print("Invalid option. Please try again.")
